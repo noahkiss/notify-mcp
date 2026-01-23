@@ -4,6 +4,12 @@ An MCP (Model Context Protocol) server that sends push notifications via [Appris
 
 ## Installation
 
+### Homebrew (macOS/Linux)
+
+```bash
+brew install noahkiss/tap/notify-mcp
+```
+
 ### Download Binary
 
 Download the latest release for your platform from the [releases page](https://github.com/noahkiss/notify-mcp/releases).
@@ -14,26 +20,24 @@ Download the latest release for your platform from the [releases page](https://g
 go install github.com/noahkiss/notify-mcp@latest
 ```
 
-Or clone and build:
+## Setup
+
+After installation, run the setup wizard:
 
 ```bash
-git clone https://github.com/noahkiss/notify-mcp.git
-cd notify-mcp
-go build -o notify-mcp
+notify-mcp init
 ```
 
-## Configuration
+This will:
+1. Prompt for your Apprise URL
+2. Prompt for your notification tag
+3. Automatically configure Claude Code (`~/.claude/settings.json`)
 
-### Environment Variables
+Then restart Claude Code to load the MCP server.
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `APPRISE_URL` | Yes | - | Full Apprise API endpoint (e.g., `http://localhost:8000/notify/apprise`) |
-| `APPRISE_TAG` | No | `general` | Apprise routing tag |
+## Manual Configuration
 
-### Claude Code Setup
-
-Add to `~/.claude/settings.json`:
+If you prefer manual setup, add to `~/.claude/settings.json`:
 
 ```json
 {
@@ -41,12 +45,20 @@ Add to `~/.claude/settings.json`:
     "notify": {
       "command": "/path/to/notify-mcp",
       "env": {
-        "APPRISE_URL": "http://your-apprise-server:8000/notify/apprise"
+        "APPRISE_URL": "http://your-apprise-server:8000/notify/apprise",
+        "APPRISE_TAG": "apprise"
       }
     }
   }
 }
 ```
+
+### Environment Variables
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `APPRISE_URL` | Yes | - | Full Apprise API endpoint |
+| `APPRISE_TAG` | No | `apprise` | Apprise routing tag |
 
 ## Usage
 
