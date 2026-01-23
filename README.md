@@ -6,18 +6,18 @@ An MCP (Model Context Protocol) server that sends push notifications via [Appris
 
 ### Download Binary
 
-Download the latest release for your platform from the [releases page](https://github.com/flightcontrol40/notify-mcp/releases).
+Download the latest release for your platform from the [releases page](https://github.com/noahkiss/notify-mcp/releases).
 
 ### Build from Source
 
 ```bash
-go install github.com/flightcontrol40/notify-mcp@latest
+go install github.com/noahkiss/notify-mcp@latest
 ```
 
 Or clone and build:
 
 ```bash
-git clone https://github.com/flightcontrol40/notify-mcp.git
+git clone https://github.com/noahkiss/notify-mcp.git
 cd notify-mcp
 go build -o notify-mcp
 ```

@@ -1,4 +1,4 @@
-module github.com/flightcontrol40/notify-mcp
+module github.com/noahkiss/notify-mcp
 
 go 1.25.1
 
