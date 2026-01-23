@@ -158,14 +158,7 @@ func runInit() {
 		os.Exit(1)
 	}
 
-	settingsPath := filepath.Join(homeDir, ".claude", "settings.json")
-	settingsDir := filepath.Dir(settingsPath)
-
-	// Ensure .claude directory exists
-	if err := os.MkdirAll(settingsDir, 0755); err != nil {
-		fmt.Fprintf(os.Stderr, "Error creating settings directory: %v\n", err)
-		os.Exit(1)
-	}
+	settingsPath := filepath.Join(homeDir, ".claude.json")
 
 	// Load existing settings or create new
 	var settings map[string]any

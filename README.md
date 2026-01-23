@@ -31,13 +31,21 @@ notify-mcp init
 This will:
 1. Prompt for your Apprise URL
 2. Prompt for your notification tag
-3. Automatically configure Claude Code (`~/.claude/settings.json`)
+3. Automatically configure Claude Code
 
 Then restart Claude Code to load the MCP server.
 
 ## Manual Configuration
 
-If you prefer manual setup, add to `~/.claude/settings.json`:
+If you prefer manual setup, use the Claude CLI:
+
+```bash
+claude mcp add -s user notify /path/to/notify-mcp \
+  -e APPRISE_URL="http://your-apprise-server:8000/notify/apprise" \
+  -e APPRISE_TAG="apprise"
+```
+
+The `-s user` flag makes the server available across all projects. Alternatively, add a `.mcp.json` file to your project root for project-specific configuration:
 
 ```json
 {
