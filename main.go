@@ -15,7 +15,7 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 )
 
-const version = "0.2.0"
+const version = "0.2.1"
 
 func main() {
 	if len(os.Args) > 1 {
@@ -148,6 +148,7 @@ func runInit() {
 			"APPRISE_URL": appriseURL,
 			"APPRISE_TAG": tag,
 		},
+		"instructions": "Send a notification when: (1) a task takes longer than 60 seconds to complete, (2) you need user input to continue, (3) a task fails with an error the user should know about. Keep notifications concise.",
 	}
 
 	// Load or create settings file
