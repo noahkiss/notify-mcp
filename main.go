@@ -15,13 +15,16 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 )
 
-const version = "0.2.3"
+const version = "0.3.0"
 
 func main() {
 	if len(os.Args) > 1 {
 		switch os.Args[1] {
 		case "init":
 			runInit()
+			return
+		case "send":
+			runSend()
 			return
 		case "version", "--version", "-v":
 			fmt.Printf("notify-mcp %s\n", version)
@@ -39,11 +42,12 @@ func printHelp() {
 	fmt.Println(`notify-mcp - MCP server for push notifications via Apprise
 
 Usage:
-  notify-mcp          Start the MCP server (stdio)
-  notify-mcp init     Configure Claude Code integration
-  notify-mcp version  Show version
+  notify-mcp                       Start the MCP server (stdio)
+  notify-mcp send <title> <message>  Send a notification directly
+  notify-mcp init                  Configure Claude Code integration
+  notify-mcp version               Show version
 
-Environment variables (when running as MCP server):
+Environment variables:
   APPRISE_URL   Apprise API endpoint (required)
   APPRISE_TAG   Notification routing tag (default: apprise)`)
 }
@@ -79,9 +83,16 @@ func handleNotification(ctx context.Context, req mcp.CallToolRequest) (*mcp.Call
 		return mcp.NewToolResultError(err.Error()), nil
 	}
 
+	if err := sendNotification(title, message); err != nil {
+		return mcp.NewToolResultError(err.Error()), nil
+	}
+	return mcp.NewToolResultText("Notification sent successfully"), nil
+}
+
+func sendNotification(title, message string) error {
 	appriseURL := os.Getenv("APPRISE_URL")
 	if appriseURL == "" {
-		return mcp.NewToolResultError("APPRISE_URL environment variable not set"), nil
+		return fmt.Errorf("APPRISE_URL environment variable not set")
 	}
 
 	tag := os.Getenv("APPRISE_TAG")
@@ -98,14 +109,30 @@ func handleNotification(ctx context.Context, req mcp.CallToolRequest) (*mcp.Call
 
 	resp, err := http.Post(appriseURL, "application/json", bytes.NewReader(body))
 	if err != nil {
-		return mcp.NewToolResultError(fmt.Sprintf("Failed to send: %v", err)), nil
+		return fmt.Errorf("failed to send: %v", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode == 200 || resp.StatusCode == 204 {
-		return mcp.NewToolResultText("Notification sent successfully"), nil
+		return nil
 	}
-	return mcp.NewToolResultError(fmt.Sprintf("HTTP %d", resp.StatusCode)), nil
+	return fmt.Errorf("HTTP %d", resp.StatusCode)
+}
+
+func runSend() {
+	if len(os.Args) < 4 {
+		fmt.Fprintln(os.Stderr, "Usage: notify-mcp send <title> <message>")
+		os.Exit(1)
+	}
+
+	title := os.Args[2]
+	message := os.Args[3]
+
+	if err := sendNotification(title, message); err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		os.Exit(1)
+	}
+	fmt.Println("Notification sent successfully")
 }
 
 func runInit() {
