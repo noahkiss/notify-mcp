@@ -28,13 +28,14 @@ After ANY change that warrants a version bump (bug fixes, features, breaking cha
 
 ## MCP Server Instructions
 
-When users configure this server, they should add an `instructions` field to ensure Claude uses it proactively. Add to `~/.claude.json` under the notify server config:
+As of v0.2.3, instructions are sent via the MCP protocol using `server.WithInstructions()`. This means Claude receives the instructions automatically when connecting - no manual config needed.
 
-```json
-"instructions": "Send a notification when: (1) a task takes longer than 60 seconds to complete, (2) you need user input to continue, (3) a task fails with an error the user should know about. Keep notifications concise."
-```
+The instructions tell Claude to send notifications when:
+1. A task takes longer than 60 seconds to complete
+2. User input is needed to continue
+3. A task fails with an error the user should know about
 
-The `init` command writes this automatically, but `claude mcp add` does not support instructions, so manual addition may be needed.
+The `init` command also writes instructions to `~/.claude.json` as a fallback.
 
 ## Current Formula Location
 

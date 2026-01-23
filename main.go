@@ -15,7 +15,7 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 )
 
-const version = "0.2.1"
+const version = "0.2.3"
 
 func main() {
 	if len(os.Args) > 1 {
@@ -51,6 +51,7 @@ Environment variables (when running as MCP server):
 func runServer() {
 	s := server.NewMCPServer("notify-mcp", version,
 		server.WithToolCapabilities(true),
+		server.WithInstructions("Send a notification when: (1) a task takes longer than 60 seconds to complete, (2) you need user input to continue, (3) a task fails with an error the user should know about. Keep notifications concise."),
 	)
 
 	tool := mcp.NewTool("send_notification",
