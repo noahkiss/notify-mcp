@@ -12,7 +12,7 @@ After ANY change that warrants a version bump (bug fixes, features, breaking cha
    git push origin v<version>
    ```
 
-3. **Update Homebrew formula** in `~/develop/homebrew-tap/Formula/notify-mcp.rb`:
+3. **Update the Homebrew formula** `Formula/notify-mcp.rb` in the [noahkiss/homebrew-tap](https://github.com/noahkiss/homebrew-tap) repo:
    ```bash
    # Get new SHA256
    curl -sL https://github.com/noahkiss/notify-mcp/archive/refs/tags/v<version>.tar.gz | sha256sum
@@ -28,7 +28,7 @@ After ANY change that warrants a version bump (bug fixes, features, breaking cha
 
 ## MCP Server Instructions
 
-As of v0.2.3, instructions are sent via the MCP protocol using `server.WithInstructions()`. This means Claude receives the instructions automatically when connecting - no manual config needed.
+The server sends its instructions over the MCP protocol with `server.WithInstructions()`, so a client receives them when it connects, with no manual config.
 
 The instructions tell Claude to send notifications when:
 1. A task takes longer than 60 seconds to complete
@@ -37,9 +37,9 @@ The instructions tell Claude to send notifications when:
 
 The `init` command also writes instructions to `~/.claude.json` as a fallback.
 
-## Current Formula Location
+## Formula Location
 
-`~/develop/homebrew-tap/Formula/notify-mcp.rb`
+`Formula/notify-mcp.rb` in the [noahkiss/homebrew-tap](https://github.com/noahkiss/homebrew-tap) repo.
 
 ## Installation
 
